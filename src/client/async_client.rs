@@ -27,13 +27,15 @@ impl Client {
         let payload =
             serde_json::to_string(&inner_event).map_err(|e| Error::Serialization(e.to_string()))?;
 
-        self.client
+        let res = self.client
             .post(&self.options.api_endpoint)
             .header(CONTENT_TYPE, "application/json")
             .body(payload)
             .send()
             .await
             .map_err(|e| Error::Connection(e.to_string()))?;
+
+        eprintln!("{:?}", res);
 
         Ok(())
     }
@@ -47,13 +49,15 @@ impl Client {
         let payload =
             serde_json::to_string(&events).map_err(|e| Error::Serialization(e.to_string()))?;
 
-        self.client
+        let res = self.client
             .post(&self.options.api_endpoint)
             .header(CONTENT_TYPE, "application/json")
             .body(payload)
             .send()
             .await
             .map_err(|e| Error::Connection(e.to_string()))?;
+
+        eprintln!("{:?}", res);
 
         Ok(())
     }
